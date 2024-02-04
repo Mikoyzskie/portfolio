@@ -11,7 +11,7 @@ export default function Header() {
 
     const heads = [
         { name: "github", link: "https://github.com/Mikoyzskie" },
-        { name: "frontend-mentor", link: "https://www.frontendmentor.io/profile/Mikoyzskie" },
+
         { name: "linkedin", link: "https://www.linkedin.com/in/mykescala/" },
         { name: "twitter", link: "https://twitter.com/SuspendedMikoy" },
     ]

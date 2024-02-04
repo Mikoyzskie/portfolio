@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <main className="max-w-[1110px] w-full m-auto text-white relative">
       <div className="relative md:mb-[60px] mb-[80px] lg:mb-[104px]">
-        <div className="flex items-center justify-center mt-[50px] mb-[20px] md:hidden block">
+        <div className="flex items-center justify-center mt-[50px] mb-[20px] md:hidden">
           <Image
             src={"/bnwtrans.png"}
             alt="hero"

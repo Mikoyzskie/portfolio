@@ -19,13 +19,22 @@ export default function Home() {
 
   return (
     <main className="max-w-[1110px] w-full m-auto text-white relative">
-      <div className="relative mb-[104px]">
-        <div className="h-[720px] flex flex-col justify-center z-20">
-          <h1 className="text-[88px] leading-[88px] tracking-[-2.5px] font-bold max-w-[706px] w-full">Nice to meet you! {"I'm"} <span className="underline decoration-[#4EE1A0] underline-offset-[9px] z-20">Myk Escala</span>.</h1>
-          <p className="max-w-[445px] w-full font-medium text-lg leading-[28px] tracking-normal text-[#D9D9D9] mt-[43px] mb-[66px]">Based in the PH, I’m a Fulllstack developer passionate about building accessible web apps that users love.</p>
-          <button className="text-[16px] leading-[26px] tracking-[2.29px] font-bold pb-[10px] border-b-2 border-[#4EE1A0] w-fit">CONTACT ME</button>
+      <div className="relative md:mb-[60px] mb-[80px] lg:mb-[104px]">
+        <div className="flex items-center justify-center mt-[50px] mb-[20px] md:hidden block">
+          <Image
+            src={"/bnwtrans.png"}
+            alt="hero"
+            width={170}
+            height={383}
+            className="bg-gradient-to-t from-[#242424] to-[rgba(255,255,255,0) rounded-b-xl"
+          />
         </div>
-        <div className="absolute right-0 top-0 -z-10">
+        <div className="md:h-[720px] h-auto flex flex-col justify-center z-20 px-4 md:px-8 lg:px-0 items-center md:items-start">
+          <h1 className="text-[40px] leading-10 md:text-[72px] lg:text-[88px] md:leading-[72px] lg:leading-[88px] tracking-[-2.5px] font-bold md:max-w-[410px] lg:max-w-[706px] w-full md:text-start text-center">Nice to meet you! {"I'm"} <span className="underline decoration-[#4EE1A0] md:underline-offset-[9px] z-20 ">Myk Escala</span>.</h1>
+          <p className="max-w-[445px] w-full font-medium text-lg leading-[28px] tracking-normal text-[#D9D9D9] mt-6 md:mt-[43px] mb-6 md:mb-[66px] md:text-start text-center">Based in the PH, I’m a Fulllstack developer passionate about building accessible web apps that users love.</p>
+          <a href="#footer" className="text-[16px] leading-[26px] tracking-[2.29px] font-bold pb-[10px] border-b-2 border-[#4EE1A0] w-fit hover:text-[#4EE1A0]">CONTACT ME</a>
+        </div>
+        <div className="absolute right-0 top-0 -z-10 md:visible invisible">
           <div className="relative">
             <Image
               src={"/bnw.jpg"}
@@ -45,11 +54,11 @@ export default function Home() {
         height={129}
         className="absolute top-[133px] -left-[261px]"
       />
-      <div className="border-t border-[#fff] pt-[72px] mb-[140px]">
-        <div className="grid grid-cols-3 gap-y-[58px]">
+      <div className="border-t border-[#fff] pt-[40px] md:pt-[56px] lg:pt-[72px] md:mb-[100px] mb-[80px] lg:mb-[140px] lg:px-0 mx-[32px] md:mx-[32px] lg:mx-0 px-4">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-6 md:gap-y-[58px] ">
           {
             langs.map((lang: language, index: number) => (
-              <div key={index} className="flex flex-col gap-[14px] ">
+              <div key={index} className="flex flex-col gap-[14px] items-center justify-center md:items-start md:justify-normal">
                 <h1 className="font-bold text-[48px] leading-[56px] tracking-[-1.5px]">{lang.lang}</h1>
                 <p className="text-[#D9D9D9] text-lg leading-[28px] tracking-normal font-medium">{lang.years} Years Experience</p>
               </div>

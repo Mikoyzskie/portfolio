@@ -5,7 +5,7 @@ import Link from "next/link"
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-
+import { clsx } from "clsx";
 import { sendMail } from "@/app/actions";
 
 interface links {
@@ -48,7 +48,7 @@ export default function Footer() {
     const [state, formAction] = useFormState(sendMail, initialValues)
     const formRef = useRef<HTMLFormElement>(null)
     const [sent, setSent] = useState(false)
-
+    const [check, setCheck] = useState(false)
 
     const heads = [
         { name: "github", link: "https://github.com/Mikoyzskie" },
@@ -59,11 +59,18 @@ export default function Footer() {
 
 
     useEffect(() => {
+        setCheck(false)
         if (state && state.error === "Message Sent") {
             formRef.current?.reset();
             setSent(true)
+            setCheck(false)
+        }
+        if (state && state.error === "Failed to parse data") {
+            setCheck(true)
         }
     }, [state])
+
+
 
 
 
@@ -78,21 +85,24 @@ export default function Footer() {
                         <p className='font-medium text-lg text-[#D9D9D9] text-center md:text-start md:max-w-none w-full max-w-[445px] mx-auto'>I would love to hear about your project and how I could help. Please fill in the form, and I’ll get back to you as soon as possible.</p>
                     </div>
                     <form ref={formRef} action={formAction} className='flex flex-col gap-8 items-end'>
-                        <input type="text" name="name" className='required:border-[#FF6F5B] in valid:border-[#4EE1A0] focus:border-[#4EE1A0] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px] uppercase' placeholder='NAME' required />
+                        <input type="text" autoComplete="off" name="name" className=' focus:border-[#4EE1A0] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px] uppercase ' placeholder='NAME' />
                         <div className="w-full text-right relative">
-                            <input type="email" name="email" className='w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px] invalid:border-[#FF6F5B] peer' placeholder='EMAIL' />
+                            <input autoComplete="off" type="email" name="email" placeholder='EMAIL' className='focus:border-[#4EE1A0] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px]  peer' />
                             <svg className="absolute right-0 top-1 peer-invalid:visible invisible" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="12" cy="12" r="11.5" stroke="#FF6F5B" />
                                 <rect x="11" y="6" width="2" height="9" rx="1" fill="#FF6F5B" />
                                 <rect x="11" y="17" width="2" height="2" rx="1" fill="#FF6F5B" />
                             </svg>
 
-                            <span className="text-[#FF6F5B] text-xs tracking-[-0.17px] peer-invalid:visible invisible">Sorry, invalid format here</span>
+                            <span className="text-[#FF6F5B]  text-xs tracking-[-0.17px] peer-invalid:visible invisible">Sorry, invalid format here</span>
                         </div>
-                        <textarea name="message" id="" className='h-[107px] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px]' placeholder='MESSAGE'></textarea>
+                        <textarea name="message" className='focus:border-[#4EE1A0] h-[107px] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px]' placeholder='MESSAGE'></textarea>
                         <span className="italic font-bold text-green-600">
                             {
                                 sent ? "Message Sent! I'll keep in touch soon!" : ""
+                            }
+                            {
+                                check ? "" : "Please check each field"
                             }
                         </span>
                         <SubmitButton />

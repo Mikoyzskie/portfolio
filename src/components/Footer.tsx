@@ -3,7 +3,8 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { useForm } from 'react-hook-form'
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 
 import { sendMail } from "@/app/actions";
 
@@ -26,10 +27,27 @@ const initialValues: IInitial = {
     email: ""
 };
 
+function SubmitButton() {
+    const { pending } = useFormStatus();
+
+    return (
+        <button
+            disabled={pending}
+            type="submit"
+            className="text-[16px] leading-[26px] tracking-[2.29px] font-bold pb-[10px] border-b-2 border-[#4EE1A0] w-fit hover:text-[#4EE1A0]">
+            {
+                pending ? "Submitting..." : "SEND MESSAGE"
+            }
+        </button>
+    )
+}
+
 
 
 export default function Footer() {
-
+    const [state, formAction] = useFormState(sendMail, initialValues)
+    const formRef = useRef<HTMLFormElement>(null)
+    const [sent, setSent] = useState(false)
 
 
     const heads = [
@@ -38,6 +56,14 @@ export default function Footer() {
         { name: "linkedin", link: "https://www.linkedin.com/in/mykescala/" },
         { name: "twitter", link: "https://twitter.com/SuspendedMikoy" },
     ]
+
+
+    useEffect(() => {
+        if (state && state.error === "Message Sent") {
+            formRef.current?.reset();
+            setSent(true)
+        }
+    }, [state])
 
 
 
@@ -51,7 +77,7 @@ export default function Footer() {
                         <h1 className="text-[40px] md:text-7xl lg:text-[88px] lg:leading-[88px] tracking-[-2.5px] font-bold text-center md:text-start">Contact</h1>
                         <p className='font-medium text-lg text-[#D9D9D9] text-center md:text-start md:max-w-none w-full max-w-[445px] mx-auto'>I would love to hear about your project and how I could help. Please fill in the form, and I’ll get back to you as soon as possible.</p>
                     </div>
-                    <form className='flex flex-col gap-8 items-end'>
+                    <form ref={formRef} action={formAction} className='flex flex-col gap-8 items-end'>
                         <input type="text" name="name" className='required:border-[#FF6F5B] in valid:border-[#4EE1A0] focus:border-[#4EE1A0] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px] uppercase' placeholder='NAME' required />
                         <div className="w-full text-right relative">
                             <input type="email" name="email" className='w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px] pb-[17px] invalid:border-[#FF6F5B] peer' placeholder='EMAIL' />
@@ -64,7 +90,13 @@ export default function Footer() {
                             <span className="text-[#FF6F5B] text-xs tracking-[-0.17px] peer-invalid:visible invisible">Sorry, invalid format here</span>
                         </div>
                         <textarea name="message" id="" className='h-[107px] w-full bg-transparent outline-none border-b tracking-[-0.22px] text-base font-medium leading-[26px]' placeholder='MESSAGE'></textarea>
-                        <button type="submit" className="text-[16px] leading-[26px] tracking-[2.29px] font-bold pb-[10px] border-b-2 border-[#4EE1A0] w-fit hover:text-[#4EE1A0]">SEND MESSAGE</button>
+                        <span className="italic font-bold text-green-600">
+                            {
+                                sent ? "Message Sent! I'll keep in touch soon!" : ""
+                            }
+                        </span>
+                        <SubmitButton />
+
                     </form>
 
                 </div>

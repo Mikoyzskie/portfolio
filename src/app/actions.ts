@@ -1,11 +1,16 @@
 "use server";
 import { z } from "zod";
+import { EmailTemplate } from "@/components/email-template";
+import { Resend } from "resend";
+import { revalidatePath } from "next/cache";
 
 interface IInitial {
   name: string;
   message: string;
   email: string;
 }
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const initialValues: IInitial = {
   name: "",
@@ -48,17 +53,25 @@ export async function sendMail(
   };
 
   try {
-    const response = await fetch("/api/sendmail", {
-      method: "POST",
+    const { data, error } = await resend.emails.send({
+      from: "Portfolio <onboarding@resend.dev>",
+      to: ["rapidstrike13@gmail.com"],
+      subject: "Portfolio Message",
+      react: EmailTemplate({
+        name: name,
+        message: message,
+        email: email,
+      }) as React.ReactElement,
     });
 
-    if (!response.ok) {
+    if (error) {
       return {
-        error: "Failed to send mail",
+        error: `${JSON.stringify(error)}`,
         formValues,
       };
     }
 
+    revalidatePath("/");
     return {
       error: "Message Sent",
       initialValues,
